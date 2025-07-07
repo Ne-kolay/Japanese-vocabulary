@@ -26,7 +26,7 @@ final class SearchViewController: UIViewController {
 
     private func setupSearchBar() {
         searchBar.delegate = self
-        searchBar.placeholder = "type any Japanese or English word.."
+        searchBar.placeholder = "type any Japanese word.."
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchBar)
 

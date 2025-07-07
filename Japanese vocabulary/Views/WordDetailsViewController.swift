@@ -69,7 +69,7 @@ final class WordDetailsViewController: UIViewController {
         let kanji = word.japanese.first?.word ?? word.slug
         let reading = word.japanese.first?.reading ?? "—"
 
-        addLabel(title: "Word", value: kanji)
+        addCenteredWordLabel(kanji) // 👉 слово теперь в центре и с большим шрифтом
         addLabel(title: "Reading", value: reading)
 
         if let jlpt = word.jlpt?.joined(separator: ", "), !jlpt.isEmpty {
@@ -104,6 +104,16 @@ final class WordDetailsViewController: UIViewController {
             }
             senseIndex += 1
         }
+    }
+
+    private func addCenteredWordLabel(_ text: String) {
+        let label = UILabel()
+        label.text = text
+        label.font = .systemFont(ofSize: 48, weight: .bold)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+
+        contentStack.addArrangedSubview(label)
     }
 
     private func addLabel(title: String, value: String) {

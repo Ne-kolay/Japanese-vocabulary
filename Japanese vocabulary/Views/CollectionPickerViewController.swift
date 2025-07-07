@@ -19,7 +19,7 @@ final class CollectionPickerViewController: UITableViewController {
         super.viewDidLoad()
 
         // Заголовок и «плюс»-кнопка
-        navigationItem.title = "Сохранить в коллекцию"
+        navigationItem.title = "Save to collection"
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .add,
             target: self,
@@ -46,15 +46,15 @@ final class CollectionPickerViewController: UITableViewController {
 
     @objc private func addCollectionTapped() {
         let alert = UIAlertController(
-            title: "Новая коллекция",
-            message: "Введите название",
+            title: "New collection",
+            message: "Enter title",
             preferredStyle: .alert
         )
-        alert.addTextField { $0.placeholder = "Название" }
+        alert.addTextField { $0.placeholder = "Title" }
 
-        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
-        alert.addAction(UIAlertAction(title: "Создать", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "Create", style: .default) { _ in
             guard
                 let text = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
                 !text.isEmpty
