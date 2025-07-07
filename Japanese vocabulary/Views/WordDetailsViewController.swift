@@ -82,21 +82,24 @@ final class WordDetailsViewController: UIViewController {
                             UIApplication.shared.open(url)
                         }
                     }, for: .touchUpInside)
-
                     contentStack.addArrangedSubview(button)
                 }
                 continue
             }
 
             let pos = sense.partsOfSpeech.joined(separator: ", ")
-            let defs = sense.englishDefinitions.joined(separator: ", ")
+            var defs = sense.englishDefinitions.joined(separator: ", ")
+
+            if let firstChar = defs.first {
+                defs.replaceSubrange(defs.startIndex...defs.startIndex, with: String(firstChar).capitalized)
+            }
 
             addDefinitionRow(definition: defs, partOfSpeech: pos)
             addDivider()
         }
 
         if let jlpt = word.jlpt?.joined(separator: ", "), !jlpt.isEmpty {
-            addPlainJLPTLabel(jlpt)
+            addJLPTLabel(jlpt.uppercased())
         }
     }
 
@@ -161,13 +164,25 @@ final class WordDetailsViewController: UIViewController {
         contentStack.addArrangedSubview(divider)
     }
 
-    private func addPlainJLPTLabel(_ value: String) {
+    private func addJLPTLabel(_ text: String) {
         let label = UILabel()
-        label.text = value
+        label.text = text
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 13, weight: .medium)
         label.textColor = .secondaryLabel
-        contentStack.addArrangedSubview(label)
+
+        let container = UIView()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: container.topAnchor, constant: 12),
+            label.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+
+        contentStack.addArrangedSubview(container)
     }
 
     // MARK: - Actions
