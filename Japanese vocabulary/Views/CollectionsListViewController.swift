@@ -9,7 +9,7 @@ final class CollectionsListViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Выберите коллекцию"
+        navigationItem.title = "Collections"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(addCollectionTapped))
@@ -53,7 +53,13 @@ final class CollectionsListViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let collection = collections[indexPath.row]
-        onCollectionSelected?(collection)
-        navigationController?.popViewController(animated: true)
+
+        if let onCollectionSelected = onCollectionSelected {
+            onCollectionSelected(collection)
+            navigationController?.popViewController(animated: true)
+        } else {
+            let detailsVC = CollectionDetailsViewController(collection: collection)
+            navigationController?.pushViewController(detailsVC, animated: true)
+        }
     }
 }

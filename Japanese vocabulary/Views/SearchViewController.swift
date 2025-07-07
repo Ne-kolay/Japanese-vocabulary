@@ -9,7 +9,7 @@ final class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Jisho Search"
+        navigationItem.title = "Search"
         view.backgroundColor = .systemBackground
 
         setupSearchBar()

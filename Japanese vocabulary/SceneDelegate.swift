@@ -13,22 +13,40 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(
-            _ scene: UIScene,
-            willConnectTo session: UISceneSession,
-            options connectionOptions: UIScene.ConnectionOptions
-        ) {
-            guard let windowScene = (scene as? UIWindowScene) else { return }
+        _ scene: UIScene,
+        willConnectTo session: UISceneSession,
+        options connectionOptions: UIScene.ConnectionOptions
+    ) {
+        guard let windowScene = (scene as? UIWindowScene) else { return }
 
-            let window = UIWindow(windowScene: windowScene)
+        let window = UIWindow(windowScene: windowScene)
 
-          
-            let rootVC = SearchViewController()
-            let navigationController = UINavigationController(rootViewController: rootVC)
+        // Вкладка "Поиск"
+        let searchVC = SearchViewController()
+        let searchNav = UINavigationController(rootViewController: searchVC)
+        searchNav.tabBarItem = UITabBarItem(
+            title: "Search",                      // ← заголовок на табе
+            image: UIImage(systemName: "magnifyingglass"),
+            selectedImage: UIImage(systemName: "magnifyingglass")
+        )
 
-            window.rootViewController = navigationController
-            self.window = window
-            window.makeKeyAndVisible()
-        }
+        // Вкладка "Коллекции"
+        let collectionsVC = CollectionsListViewController()
+        let collectionsNav = UINavigationController(rootViewController: collectionsVC)
+        collectionsNav.tabBarItem = UITabBarItem(
+            title: "Collections",                 // ← заголовок на табе
+            image: UIImage(systemName: "books.vertical"),
+            selectedImage: UIImage(systemName: "books.vertical.fill")
+        )
+
+        // Tab Bar Controller
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [searchNav, collectionsNav]
+
+        window.rootViewController = tabBarController
+        self.window = window
+        window.makeKeyAndVisible()
+    }
 
 
     func sceneDidDisconnect(_ scene: UIScene) {
