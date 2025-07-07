@@ -91,15 +91,12 @@ final class WordDetailsViewController: UIViewController {
             let pos = sense.partsOfSpeech.joined(separator: ", ")
             let defs = sense.englishDefinitions.joined(separator: ", ")
 
-            if !pos.isEmpty {
-                addPlainLabel(pos)
-            }
-
-            addPlainLabel(defs)
+            addDefinitionRow(definition: defs, partOfSpeech: pos)
+            addDivider()
         }
 
         if let jlpt = word.jlpt?.joined(separator: ", "), !jlpt.isEmpty {
-            addPlainLabel(jlpt)
+            addPlainJLPTLabel(jlpt)
         }
     }
 
@@ -128,11 +125,48 @@ final class WordDetailsViewController: UIViewController {
         contentStack.addArrangedSubview(stack)
     }
 
-    private func addPlainLabel(_ value: String) {
+    private func addDefinitionRow(definition: String, partOfSpeech: String) {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .fill
+        stack.alignment = .firstBaseline
+        stack.spacing = 8
+
+        let definitionLabel = UILabel()
+        definitionLabel.text = definition
+        definitionLabel.font = .systemFont(ofSize: 16)
+        definitionLabel.textAlignment = .left
+        definitionLabel.numberOfLines = 0
+        definitionLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        let partOfSpeechLabel = UILabel()
+        partOfSpeechLabel.text = partOfSpeech
+        partOfSpeechLabel.font = .systemFont(ofSize: 14)
+        partOfSpeechLabel.textAlignment = .right
+        partOfSpeechLabel.textColor = .secondaryLabel
+        partOfSpeechLabel.numberOfLines = 0
+        partOfSpeechLabel.setContentHuggingPriority(.required, for: .horizontal)
+
+        stack.addArrangedSubview(definitionLabel)
+        stack.addArrangedSubview(partOfSpeechLabel)
+
+        contentStack.addArrangedSubview(stack)
+    }
+
+    private func addDivider() {
+        let divider = UIView()
+        divider.backgroundColor = .separator
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        contentStack.addArrangedSubview(divider)
+    }
+
+    private func addPlainJLPTLabel(_ value: String) {
         let label = UILabel()
         label.text = value
         label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .secondaryLabel
         contentStack.addArrangedSubview(label)
     }
 
