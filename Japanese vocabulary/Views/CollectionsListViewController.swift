@@ -21,6 +21,11 @@ final class CollectionsListViewController: UITableViewController {
         collections = CollectionsStorage.shared.getAll()
         tableView.reloadData()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadCollections()
+    }
 
     @objc private func addCollectionTapped() {
         let alert = UIAlertController(title: "Новая коллекция", message: "Введите название", preferredStyle: .alert)

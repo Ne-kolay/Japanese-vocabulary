@@ -126,14 +126,12 @@ final class WordDetailsViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func saveTapped() {
-        let vc = CollectionsListViewController()
-        vc.onCollectionSelected = { [weak self] collection in
+        let picker = CollectionPickerViewController()
+        picker.onCollectionSelected = { [weak self] collection in
             guard let self = self else { return }
             CollectionsStorage.shared.addWord(self.word, to: collection.id)
-            let alert = UIAlertController(title: "Готово", message: "Слово сохранено в коллекцию \"\(collection.title)\"", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "ОК", style: .default))
-            self.present(alert, animated: true)
+            self.showToast(message: "Слово сохранено в «\(collection.title)»")
         }
-        navigationController?.pushViewController(vc, animated: true)
+        present(UINavigationController(rootViewController: picker), animated: true)
     }
 }
