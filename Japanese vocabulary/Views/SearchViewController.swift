@@ -14,6 +14,13 @@ final class SearchViewController: UIViewController {
 
         setupSearchBar()
         setupTableView()
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 
     private func setupSearchBar() {
@@ -66,7 +73,16 @@ extension SearchViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         search(query)
     }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            results = []
+            tableView.reloadData()
+        }
+    }
 }
+
+
 
 // MARK: - UITableViewDataSource
 extension SearchViewController: UITableViewDataSource {
