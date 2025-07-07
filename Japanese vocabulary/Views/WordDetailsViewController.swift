@@ -69,8 +69,7 @@ final class WordDetailsViewController: UIViewController {
         let kanji = word.japanese.first?.word ?? word.slug
         let reading = word.japanese.first?.reading ?? "—"
 
-        addCenteredWordLabel(kanji) // 👉 слово теперь в центре и с большим шрифтом
-        addLabel(title: "Reading", value: reading)
+        addCenteredWordAndReading(word: kanji, reading: reading)
 
         if let jlpt = word.jlpt?.joined(separator: ", "), !jlpt.isEmpty {
             addLabel(title: "JLPT", value: jlpt)
@@ -106,14 +105,29 @@ final class WordDetailsViewController: UIViewController {
         }
     }
 
-    private func addCenteredWordLabel(_ text: String) {
-        let label = UILabel()
-        label.text = text
-        label.font = .systemFont(ofSize: 48, weight: .bold)
-        label.textAlignment = .center
-        label.numberOfLines = 0
+    private func addCenteredWordAndReading(word: String, reading: String) {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 4
 
-        contentStack.addArrangedSubview(label)
+        let wordLabel = UILabel()
+        wordLabel.text = word
+        wordLabel.font = .systemFont(ofSize: 48, weight: .bold)
+        wordLabel.textAlignment = .center
+        wordLabel.numberOfLines = 0
+
+        let readingLabel = UILabel()
+        readingLabel.text = reading
+        readingLabel.font = .systemFont(ofSize: 18)
+        readingLabel.textAlignment = .center
+        readingLabel.numberOfLines = 0
+        readingLabel.textColor = .secondaryLabel
+
+        stack.addArrangedSubview(wordLabel)
+        stack.addArrangedSubview(readingLabel)
+
+        contentStack.addArrangedSubview(stack)
     }
 
     private func addLabel(title: String, value: String) {
