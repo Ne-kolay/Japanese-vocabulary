@@ -71,12 +71,6 @@ final class WordDetailsViewController: UIViewController {
 
         addCenteredWordAndReading(word: kanji, reading: reading)
 
-        if let jlpt = word.jlpt?.joined(separator: ", "), !jlpt.isEmpty {
-            addLabel(title: "JLPT", value: jlpt)
-        }
-
-        var senseIndex = 1
-
         for sense in word.senses {
             if sense.partsOfSpeech.contains("Wikipedia definition") {
                 if let wikiURL = sense.links?.first?.url {
@@ -94,14 +88,18 @@ final class WordDetailsViewController: UIViewController {
                 continue
             }
 
-            let defs = sense.englishDefinitions.joined(separator: ", ")
             let pos = sense.partsOfSpeech.joined(separator: ", ")
+            let defs = sense.englishDefinitions.joined(separator: ", ")
 
-            addLabel(title: "Meaning \(senseIndex)", value: defs)
             if !pos.isEmpty {
-                addLabel(title: "Part of Speech", value: pos)
+                addPlainLabel(pos)
             }
-            senseIndex += 1
+
+            addPlainLabel(defs)
+        }
+
+        if let jlpt = word.jlpt?.joined(separator: ", "), !jlpt.isEmpty {
+            addPlainLabel(jlpt)
         }
     }
 
@@ -130,21 +128,12 @@ final class WordDetailsViewController: UIViewController {
         contentStack.addArrangedSubview(stack)
     }
 
-    private func addLabel(title: String, value: String) {
-        let titleLabel = UILabel()
-        titleLabel.text = title
-        titleLabel.font = .boldSystemFont(ofSize: 16)
-
-        let valueLabel = UILabel()
-        valueLabel.text = value
-        valueLabel.numberOfLines = 0
-        valueLabel.font = .systemFont(ofSize: 16)
-
-        let stack = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
-        stack.axis = .vertical
-        stack.spacing = 4
-
-        contentStack.addArrangedSubview(stack)
+    private func addPlainLabel(_ value: String) {
+        let label = UILabel()
+        label.text = value
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 16)
+        contentStack.addArrangedSubview(label)
     }
 
     // MARK: - Actions
