@@ -19,13 +19,14 @@ final class SearchViewController: UIViewController {
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
+
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
 
     private func setupSearchBar() {
         searchBar.delegate = self
-        searchBar.placeholder = "Введите японское слово"
+        searchBar.placeholder = "type any Japanese or English word.."
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchBar)
 
@@ -39,7 +40,7 @@ final class SearchViewController: UIViewController {
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
-        tableView.delegate = self // 👈 добавили
+        tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         view.addSubview(tableView)
 
@@ -58,7 +59,7 @@ final class SearchViewController: UIViewController {
                 self?.results = words
                 self?.tableView.reloadData()
             case .failure(let error):
-                print("Ошибка поиска:", error)
+                print("Search error:", error)
             }
         }
     }
@@ -81,8 +82,6 @@ extension SearchViewController: UISearchBarDelegate {
         }
     }
 }
-
-
 
 // MARK: - UITableViewDataSource
 extension SearchViewController: UITableViewDataSource {

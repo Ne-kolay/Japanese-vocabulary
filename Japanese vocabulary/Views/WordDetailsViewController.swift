@@ -14,7 +14,7 @@ final class WordDetailsViewController: UIViewController {
     init(word: JishoWord) {
         self.word = word
         super.init(nibName: nil, bundle: nil)
-        title = "Детали"
+        title = "Details"
     }
 
     required init?(coder: NSCoder) {
@@ -35,7 +35,7 @@ final class WordDetailsViewController: UIViewController {
 
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Сохранить",
+            title: "Save",
             style: .plain,
             target: self,
             action: #selector(saveTapped)
@@ -69,8 +69,8 @@ final class WordDetailsViewController: UIViewController {
         let kanji = word.japanese.first?.word ?? word.slug
         let reading = word.japanese.first?.reading ?? "—"
 
-        addLabel(title: "Слово", value: kanji)
-        addLabel(title: "Чтение", value: reading)
+        addLabel(title: "Word", value: kanji)
+        addLabel(title: "Reading", value: reading)
 
         if let jlpt = word.jlpt?.joined(separator: ", "), !jlpt.isEmpty {
             addLabel(title: "JLPT", value: jlpt)
@@ -82,7 +82,7 @@ final class WordDetailsViewController: UIViewController {
             if sense.partsOfSpeech.contains("Wikipedia definition") {
                 if let wikiURL = sense.links?.first?.url {
                     let button = UIButton(type: .system)
-                    button.setTitle("Открыть в Википедии", for: .normal)
+                    button.setTitle("Open in Wikipedia", for: .normal)
                     button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
                     button.addAction(UIAction { _ in
                         if let url = URL(string: wikiURL) {
@@ -98,9 +98,9 @@ final class WordDetailsViewController: UIViewController {
             let defs = sense.englishDefinitions.joined(separator: ", ")
             let pos = sense.partsOfSpeech.joined(separator: ", ")
 
-            addLabel(title: "Значение \(senseIndex)", value: defs)
+            addLabel(title: "Meaning \(senseIndex)", value: defs)
             if !pos.isEmpty {
-                addLabel(title: "Часть речи", value: pos)
+                addLabel(title: "Part of Speech", value: pos)
             }
             senseIndex += 1
         }
@@ -130,7 +130,7 @@ final class WordDetailsViewController: UIViewController {
         picker.onCollectionSelected = { [weak self] collection in
             guard let self = self else { return }
             CollectionsStorage.shared.addWord(self.word, to: collection.id)
-            self.showToast(message: "Слово сохранено в «\(collection.title)»")
+            self.showToast(message: "Word saved to \"\(collection.title)\"")
         }
         present(UINavigationController(rootViewController: picker), animated: true)
     }
