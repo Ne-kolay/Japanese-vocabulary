@@ -1,0 +1,46 @@
+# === Xcode Project Files ===
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+# === Build products ===
+build/
+DerivedData/
+*.o
+*.LinkFileList
+*.hmap
+
+# === User-specific data ===
+*.swp
+*.swo
+.DS_Store
+.idea/
+*.orig
+
+# === SwiftPM (если используешь) ===
+.swiftpm
+Package.resolved
+
+# === CocoaPods ===
+Pods/
+Podfile.lock
+
+# === Carthage ===
+Carthage/
+
+# === Fastlane ===
+fastlane/report.xml
+fastlane/screenshots/
+fastlane/test_output/
+
+# === Archives ===
+*.xcarchive
+
+# === Misc ===
+*.log
+*.tmp
+*.lock
