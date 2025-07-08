@@ -61,4 +61,8 @@ final class CollectionsStorage {
         collections.removeAll { $0.id == id }
         save(collections)
     }
+    
+    func getById(_ id: UUID) -> WordCollection? {
+        return getAll().first(where: { $0.id == id })
+    }
 }

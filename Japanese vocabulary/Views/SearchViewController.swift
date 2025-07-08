@@ -9,30 +9,40 @@ final class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Jisho Search"
+        navigationItem.title = "Search"
         view.backgroundColor = .systemBackground
 
         setupSearchBar()
         setupTableView()
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 
     private func setupSearchBar() {
         searchBar.delegate = self
-        searchBar.placeholder = "Введите японское слово"
+        searchBar.placeholder = "type any Japanese word.."
         searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.searchBarStyle = .minimal
         view.addSubview(searchBar)
 
         NSLayoutConstraint.activate([
             searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
         ])
     }
 
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
-        tableView.delegate = self // 👈 добавили
+        tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         view.addSubview(tableView)
 
@@ -51,7 +61,7 @@ final class SearchViewController: UIViewController {
                 self?.results = words
                 self?.tableView.reloadData()
             case .failure(let error):
-                print("Ошибка поиска:", error)
+                print("Search error:", error)
             }
         }
     }
@@ -65,6 +75,13 @@ extension SearchViewController: UISearchBarDelegate {
 
         searchBar.resignFirstResponder()
         search(query)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            results = []
+            tableView.reloadData()
+        }
     }
 }
 
