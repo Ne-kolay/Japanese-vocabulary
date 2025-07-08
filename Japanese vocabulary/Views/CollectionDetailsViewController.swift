@@ -2,7 +2,7 @@ import UIKit
 
 final class CollectionDetailsViewController: UIViewController {
 
-    private let collection: WordCollection
+    private var collection: WordCollection
     private var words: [JishoWord] {
         collection.words
     }
@@ -48,6 +48,19 @@ final class CollectionDetailsViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
     }
+
+    private func deleteWord(at index: Int) {
+        let wordToRemove = words[index]
+        CollectionsStorage.shared.removeWord(wordToRemove, from: collection.id)
+
+        // Обновляем коллекцию вручную
+        if let updated = CollectionsStorage.shared.getById(collection.id) {
+            self.collection.words = updated.words  // <- если можно напрямую менять
+            tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+        } else {
+            tableView.reloadData()
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -77,5 +90,16 @@ extension CollectionDetailsViewController: UITableViewDelegate {
         let word = words[indexPath.row]
         let vc = WordDetailsViewController(word: word)
         navigationController?.pushViewController(vc, animated: true)
+    }
+
+    // Свайп для удаления
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+    -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] _, _, completion in
+            self?.deleteWord(at: indexPath.row)
+            completion(true)
+        }
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }

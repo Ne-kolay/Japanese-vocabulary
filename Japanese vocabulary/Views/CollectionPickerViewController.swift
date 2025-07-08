@@ -1,8 +1,3 @@
-//
-//  CollectionPickerViewController.swift
-//  Japanese vocabulary
-//
-
 import UIKit
 
 /// Экран-лист для выбора (или создания) коллекции при сохранении слова.
@@ -29,6 +24,7 @@ final class CollectionPickerViewController: UITableViewController {
         // Таблица
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.tableFooterView = UIView()   // убираем лишние разделители
+        tableView.rowHeight = 70
         reloadCollections()
 
         // Делаем лист
@@ -75,8 +71,15 @@ final class CollectionPickerViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let collection = collections[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = collections[indexPath.row].title
+
+        var content = cell.defaultContentConfiguration()
+        content.text = collection.title
+        content.image = UIImage(systemName: "folder")
+        content.imageProperties.tintColor = .systemBlue
+        cell.contentConfiguration = content
+
         return cell
     }
 

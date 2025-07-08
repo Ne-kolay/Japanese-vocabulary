@@ -72,20 +72,7 @@ final class WordDetailsViewController: UIViewController {
         addCenteredWordAndReading(word: kanji, reading: reading)
 
         for sense in word.senses {
-            if sense.partsOfSpeech.contains("Wikipedia definition") {
-                if let wikiURL = sense.links?.first?.url {
-                    let button = UIButton(type: .system)
-                    button.setTitle("Open in Wikipedia", for: .normal)
-                    button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-                    button.addAction(UIAction { _ in
-                        if let url = URL(string: wikiURL) {
-                            UIApplication.shared.open(url)
-                        }
-                    }, for: .touchUpInside)
-                    contentStack.addArrangedSubview(button)
-                }
-                continue
-            }
+            // Удалили обработку Wikipedia definition
 
             let pos = sense.partsOfSpeech.joined(separator: ", ")
             var defs = sense.englishDefinitions.joined(separator: ", ")
