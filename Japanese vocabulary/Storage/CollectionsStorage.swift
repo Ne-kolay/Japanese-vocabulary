@@ -8,8 +8,6 @@ final class CollectionsStorage {
 
     private init() {}
 
-    // MARK: - Основные методы
-
     func getAll() -> [WordCollection] {
         guard let data = defaults.data(forKey: key) else { return [] }
         do {
@@ -41,7 +39,7 @@ final class CollectionsStorage {
         var collections = getAll()
         guard let index = collections.firstIndex(where: { $0.id == collectionId }) else { return }
 
-        // Не добавляем слово, если уже есть
+        //не добавляем слово, если уже есть
         if !collections[index].words.contains(where: { $0.slug == word.slug }) {
             collections[index].words.append(word)
             save(collections)
