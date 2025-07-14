@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  Japanese vocabulary
-//
-//  Created by Nikolay on 06.07.2025.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -21,20 +14,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
-        // Вкладка "Поиск"
+        // Seatch tab
         let searchVC = SearchViewController()
         let searchNav = UINavigationController(rootViewController: searchVC)
         searchNav.tabBarItem = UITabBarItem(
-            title: "Search",                      // ← заголовок на табе
+            title: "Search",                     
             image: UIImage(systemName: "magnifyingglass"),
             selectedImage: UIImage(systemName: "magnifyingglass")
         )
 
-        // Вкладка "Коллекции"
+        // Collections tab
         let collectionsVC = CollectionsListViewController()
         let collectionsNav = UINavigationController(rootViewController: collectionsVC)
         collectionsNav.tabBarItem = UITabBarItem(
-            title: "Collections",                 // ← заголовок на табе
+            title: "Collections",                 
             image: UIImage(systemName: "books.vertical"),
             selectedImage: UIImage(systemName: "books.vertical.fill")
         )
