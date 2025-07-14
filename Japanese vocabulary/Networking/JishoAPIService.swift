@@ -8,16 +8,13 @@ final class JishoAPIService {
     private let baseURL = "https://jisho.org/api/v1/search/words"
 
     func search(for keyword: String, completion: @escaping (Result<[JishoWord], Error>) -> Void) {
-        // Готовим URL
         guard let encoded = keyword.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: "\(baseURL)?keyword=\(encoded)") else {
             completion(.failure(APIError.invalidURL))
             return
         }
 
-        // Создаём запрос
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            // Обработка ошибок сети
             if let error = error {
                 DispatchQueue.main.async {
                     completion(.failure(error))
@@ -32,7 +29,6 @@ final class JishoAPIService {
                 return
             }
 
-            // Парсим JSON
             do {
                 let decoded = try JSONDecoder().decode(JishoResponse.self, from: data)
                 DispatchQueue.main.async {
